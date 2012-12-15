@@ -1,0 +1,102 @@
+<HTML>
+<HEAD>
+<HTA:APPLICATION ID="Lab7.HTA"
+	border="thin"
+	maximizeButton="no"/>
+<TITLE>HTA-Editor</TITLE>
+<style>
+textarea {
+	float: left;
+    margin: 7px 7px 7px 0;
+}
+
+input {
+	width: 10 em;
+	margin: 7px 7px 7px 0;
+}
+</style>
+
+<script>
+	var isCurrentDocSaved = true;
+	var currentDocPath = '';
+	var _ta;
+	
+	function init() {
+		window.resizeTo(900,500);
+		_ta = document.getElementById('_ta');
+	}
+	
+	function getCWD() { // returns current work directory
+		if (!currentDocPath)
+			return 'C:\\';
+		var fs = new ActiveXObject("Scripting.FileSystemObject");
+		return fs.GetAbsolutePathName(currentDocPath);
+	}
+	
+	// details about IO objects:
+	// http://www.script-coding.com/WSH/FileSystemObject.html
+	function saveToFile(content,path) {
+		var fs = new ActiveXObject("Scripting.FileSystemObject");
+		var os = fs.OpenTextFile(path,2,true,0);
+		os.Write(content);
+		os.Close();
+	}
+	
+	function readFromFile(path) {
+		var fs = new ActiveXObject("Scripting.FileSystemObject");
+		var f = fs.GetFile(path);
+		var is = f.OpenAsTextStream(1, 0); // 1 means open for reading; 0 means ASCII
+		var content = '';
+		if (!is.AtEndOfStream)
+			content = is.ReadAll();
+		is.Close();
+		return content;
+	}
+	
+	function getNewPath() {
+		var objDialog = new ActiveXObject("UserAccounts.CommonDialog");
+		objDialog.Filter = 'All Files|*.*';
+		objDialog.InitialDir = getCWD();
+		var result = objDialog.ShowOpen();
+		return (result)? objDialog.FileName: '';
+	}
+
+	function processLoad() {
+		var path = getNewPath();
+		if(!path)
+			return;
+		_ta.value = readFromFile(path);
+		changeSavedState(true);
+		document.title = currentDocPath = path;
+	}
+	
+	function processSave() {
+		processSaveAs(currentDocPath);
+	}
+
+	function processSaveAs(_path) { // _path is optional parameter
+		var path = (arguments.length && arguments[0])? arguments[0]: getNewPath();
+		if (!path)
+			return;
+		currentDocPath = path;
+		saveToFile(_ta.value,currentDocPath);
+		changeSavedState(true);
+	}
+	
+	function changeSavedState(isSaved) {
+		isCurrentDocSaved = isSaved;
+		if (currentDocPath)
+			document.title = currentDocPath + ((isSaved)? '': '*');
+		else
+			document.title = 'unsaved';
+	}
+</script>
+
+</HEAD>
+<BODY onload="init()">
+	<textarea rows="25" cols="80" id='_ta' onkeyup="changeSavedState(false)">Hi, I'm a text editor</textarea>
+	<input type="button" value="load" onclick="processLoad()"></br>
+	<input type="button" value="save" onclick="processSave()"></br>
+	<input type="button" value="save as..." onclick="processSaveAs()">
+</BODY>
+</HTML>
