@@ -14,11 +14,6 @@ input {
 	width: 10 em;
 	margin: 7px 7px 7px 0;
 }
-
-body {
-//	padding: 10 px;
-//	width: 1024px;
-}
 </style>
 
 <script>
@@ -65,18 +60,8 @@ body {
 		var result = objDialog.ShowOpen();
 		return (result)? objDialog.FileName: '';
 	}
-	
-/*	function checkUnsavedChanges() {
-		if (!isCurrentDocSaved)
-		
-		else
-			reuturn true;
-	}
-*/
-	
+
 	function processLoad() {
-/*		if(!checkUnsavedChanges)
-			return;*/
 		var path = getNewPath();
 		if(!path)
 			return;
