@@ -1,13 +1,62 @@
-<!doctype html>
+<!DOCTYPE html>
 <html>
 <head>
 	<meta charset="UTF-8">
 	<title>Lab 5</title>
+	<style>
+		.demo-form > label {
+			display: block;
+		}
+		.demo-form > input{
+			border: 1px solid #d3d3d3;
+			-webkit-transition: background 1s ease;
+			-moz-transition: background 1s ease;
+			-o-transition: background 1s ease;
+			-ms-transition: background 1s ease;
+			transition: background 1s ease;
+		}
+		.demo-form > input[type="submit"] {
+			display: block;
+			padding: 5px 20px;
+			color: white;
+			text-shadow: 1px 1px 0 black;
+			border: 1px solid rgb(0,128,0);
+			background: rgb(0,192,0);
+
+		}
+
+		.incorrect-data {
+			background: rgb(253,215,215);
+		}
+	</style>
 </head>
 <body>
-	<form action="dataProcessing.pl" method="GET">
-		<input type="text" name="name" value="foo">
-		<input type="submit" value="send">
+	<form class="demo-form" action="dataProcessing.pl" method="POST">
+		<label>color</label>    <input type="color"	   name="color"    value="#BADA55"/>
+		<label>date</label>     <input type="date"     name="date"     value="2012-12-12"/>
+		<label>email</label>    <input type="email"    name="email"    value="foo@bar.baz"/>
+		<label>number</label>   <input type="number"   name="number"   value="100500"/>
+		<label>password</label> <input type="password" name="password" value="foo"/>
+		<label>range</label>    <input type="range"    name="range"    value="12"/>
+		<label>search</label>   <input type="search"   name="search"   value="foo"/>
+		<label>text</label>     <input type="text"     name="text"     value="foo"/>
+		<label>time</label>     <input type="time"     name="time"     value="00:01:00"/>
+		<input type="submit" value="send"/>
 	</form>
+	<script>
+		var errorCssClass = 'incorrect-data';
+		document.forms[0].onsubmit = (function (arguments) {
+			var isValid = true;
+			for (var i = 0; i<arguments.srcElement.length; i++){
+				if( !arguments.srcElement[i].value && arguments.srcElement.type!=='submit' ) {
+					arguments.srcElement[i].className = errorCssClass;
+					isValid = false;
+				} else {
+					arguments.srcElement[i].className = '';
+				}
+			}
+			return isValid;
+		});
+	</script>
 </body>
 </html>
