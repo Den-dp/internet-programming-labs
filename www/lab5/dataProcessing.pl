@@ -16,5 +16,8 @@
 # Для обробки даних, які переслані на сервер, створити CGI-скрипт на мові Perl.
 # Розкодовані дані повернути клієнтові
 
-print "Content-Type: text/html\n\n";
+
+print "Content-type: text/html\n\n";
 print "<html><br><br><br><br><h2>!!!</h2>";
+print "Thank you, here is the information you entered:<br>";
+print "Name: $name";
