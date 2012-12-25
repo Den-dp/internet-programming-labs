@@ -1,0 +1,59 @@
+﻿html,
+body {
+	margin:0;
+	padding:0;
+	}
+
+body {
+	width: 80%;
+	min-width: 600px;
+	margin: 0 auto;
+	font-family: serif;
+	font-size: 15px;
+	}
+
+	h1 {
+		font-size: 30px;
+		color: gray;
+		}
+
+	h1:after,
+	h1:before {
+		display: inline;
+		color: black;
+		font-family: "Georgia";
+		font-size: 40px;
+	}
+		h1:before {
+			content: open-quote;
+		}
+		h1:after {
+			content: close-quote;
+		}
+
+	h2 {
+		text-align: center;
+		margin: 20px auto 0;
+		font-size: 22px;
+		color: gray;
+		}
+
+	article p:first-letter {
+		margin-top: 10px;
+		color: red;
+		font-size: 30px;
+		}
+
+	section {
+		margin-top: 10px;
+		}
+
+	a {
+		color: darkblue;
+		text-decoration: underline;
+		}
+
+	a:hover {
+		color: blue;
+		text-decoration: none;
+		}
