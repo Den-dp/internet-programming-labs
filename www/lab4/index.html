@@ -3,41 +3,52 @@
 <head>
 	<meta charset="utf-8">
     <title>lab4</title>
-	
+
     <style>
-		p {
-			color: #333300;
-		}
-		#smile {
-			width: 100px;
-			heigth: 100px;
+		.selected {
+			color: red;
 		}
 	</style>
-	
-	<script>
-		function changeColor(e) {
-			e.style.color = "#999900";
-		}
-		function returnColor(e) {
-			e.style.color = "#333300";
-		}
-		function changeSize(e) {
-			e.style.width = "200px";
-			e.style.height = "200px";
-		}
-		function returnSize(e) {
-			e.style.width = "100px";
-			e.style.height = "100px";
-		}
-	</script>
+
+
 </head>
-<body>	
-	<p onmouseover="changeColor(this)" onmouseout="returnColor(this)">
-		К сожалению, боюсь, у меня все плохо с фантазией, поэтому абзацы будут вот такие вот коротки
-	</p>
-	<p onmouseover="changeColor(this)" onmouseout="returnColor(this)">
-		Впрочем, в условиях лабы ничего не было сказано про содержимое абзацев, так что моя совесть чиста
-	</p>
-	<img id="smile" src="smile.jpg" onmouseover="changeSize(this)" onmouseout="returnSize(this)">
+<body>
+	<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Voluptatum impedit voluptatibus soluta magnam mollitia harum voluptatem saepe porro omnis ipsam hic beatae quae rem corporis atque quod aliquid quisquam fugiat officiis voluptas eaque amet quam delectus repellat illo ad commodi. Explicabo officiis asperiores reiciendis unde incidunt nobis ea eos temporibus quos excepturi alias nihil autem ducimus sapiente iste! Ipsum odit laudantium sunt tempore dolore quasi</p>
+	<p>veritatis suscipit accusantium facilis laboriosam! Magni itaque nobis doloribus voluptate voluptatum dicta consequuntur id architecto reprehenderit veniam sequi optio rerum adipisci maxime a rem repellendus provident eveniet eum et. Soluta nemo magnam adipisci provident distinctio iste maiores similique blanditiis eius eligendi molestias minima saepe suscipit tenetur repudiandae modi architecto ipsum minus sequi quod quidem consequatur qui! Adipisci fugiat exercitationem quae iusto beatae dolor!</p>
+	<img src="html5.png">
+
+	<script>
+	(function(d){
+
+		function selectParagraph(event){
+			var target = event.target || event.srcElement;
+			target.className = 'selected';
+		}
+
+		function zoomImage(event){
+			var target = event.target || event.srcElement;
+			target.style.height = target.height*2 + 'px';
+		}
+
+		function removeClass(event){
+			var target = event.target || event.srcElement;
+			target.className = '';
+			target.style.height = '';
+		}
+
+		var p = d.querySelectorAll("p"),
+			img = d.querySelector("img");
+
+		for(var i = p.length-1; i >= 0; i--){
+			p[i].addEventListener("mouseover", selectParagraph, false);
+			p[i].addEventListener("mouseout", removeClass, false);
+		}
+
+		img.addEventListener("mouseover", zoomImage, false);
+		img.addEventListener("mouseout", removeClass, false);
+
+	})(document);
+
+	</script>
 </body>
 </html>
