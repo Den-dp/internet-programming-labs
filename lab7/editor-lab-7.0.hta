@@ -1,9 +1,9 @@
 <HTML>
-<HEAD>
-<HTA:APPLICATION ID="Lab7.HTA"
+<head>
+<hta:application id="Lab7.HTA"
 	border="thin"
 	maximizeButton="no"/>
-<TITLE>HTA-Editor</TITLE>
+<title>HTA-Editor</title>
 <style>
 textarea {
 	float: left;
@@ -17,42 +17,45 @@ input {
 </style>
 
 <script>
-	var isCurrentDocSaved = true;
-	var currentDocPath = '';
-	var _ta;
-	
+	var isCurrentDocSaved = true,
+		currentDocPath = '',
+		_ta;
+
 	function init() {
 		window.resizeTo(900,500);
 		_ta = document.getElementById('_ta');
 	}
-	
+
 	function getCWD() { // returns current work directory
-		if (!currentDocPath)
+		if (!currentDocPath){
 			return 'C:\\';
+		}
 		var fs = new ActiveXObject("Scripting.FileSystemObject");
 		return fs.GetAbsolutePathName(currentDocPath);
 	}
-	
+
 	// details about IO objects:
 	// http://www.script-coding.com/WSH/FileSystemObject.html
 	function saveToFile(content,path) {
-		var fs = new ActiveXObject("Scripting.FileSystemObject");
-		var os = fs.OpenTextFile(path,2,true,0);
+		var fs = new ActiveXObject("Scripting.FileSystemObject"),
+			os = fs.OpenTextFile(path,2,true,0);
 		os.Write(content);
 		os.Close();
 	}
-	
+
 	function readFromFile(path) {
-		var fs = new ActiveXObject("Scripting.FileSystemObject");
-		var f = fs.GetFile(path);
-		var is = f.OpenAsTextStream(1, 0); // 1 means open for reading; 0 means ASCII
-		var content = '';
-		if (!is.AtEndOfStream)
+		var fs = new ActiveXObject("Scripting.FileSystemObject"),
+			f = fs.GetFile(path),
+			is = f.OpenAsTextStream(1, 0), // 1 means open for reading; 0 means ASCII
+			content = '';
+
+		if (!is.AtEndOfStream){
 			content = is.ReadAll();
+		}
 		is.Close();
 		return content;
 	}
-	
+
 	function getNewPath() {
 		var objDialog = new ActiveXObject("UserAccounts.CommonDialog");
 		objDialog.Filter = 'All Files|*.*';
@@ -63,40 +66,43 @@ input {
 
 	function processLoad() {
 		var path = getNewPath();
-		if(!path)
+		if(!path) {
 			return;
+		}
 		_ta.value = readFromFile(path);
 		changeSavedState(true);
 		document.title = currentDocPath = path;
 	}
-	
+
 	function processSave() {
 		processSaveAs(currentDocPath);
 	}
 
 	function processSaveAs(_path) { // _path is optional parameter
 		var path = (arguments.length && arguments[0])? arguments[0]: getNewPath();
-		if (!path)
+		if (!path) {
 			return;
+		}
 		currentDocPath = path;
 		saveToFile(_ta.value,currentDocPath);
 		changeSavedState(true);
 	}
-	
+
 	function changeSavedState(isSaved) {
 		isCurrentDocSaved = isSaved;
-		if (currentDocPath)
+		if (currentDocPath){
 			document.title = currentDocPath + ((isSaved)? '': '*');
-		else
+		} else {
 			document.title = 'unsaved';
+		}
 	}
 </script>
 
-</HEAD>
-<BODY onload="init()">
+</head>
+<body onload="init()">
 	<textarea rows="25" cols="80" id='_ta' onkeyup="changeSavedState(false)">Hi, I'm a text editor</textarea>
 	<input type="button" value="load" onclick="processLoad()"></br>
 	<input type="button" value="save" onclick="processSave()"></br>
 	<input type="button" value="save as..." onclick="processSaveAs()">
-</BODY>
-</HTML>
+</body>
+</html>
